@@ -1,0 +1,23 @@
+{
+  "name": "js-sound-machine",
+  "version": "1.0.0",
+  "description": "JS implementation of Andrew Dutcher's sound machine json format",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pconrad/js-sound-machine.git"
+  },
+  "keywords": [
+    "sound",
+    "json"
+  ],
+  "author": "Phill Conrad <pconrad@cs.ucsb.edu> (https://foo.cs.ucsb.edu/pawiki)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pconrad/js-sound-machine/issues"
+  },
+  "homepage": "https://github.com/pconrad/js-sound-machine#readme"
+}

@@ -1,10 +1,8 @@
 
 
 module.exports = {
-  parseMusicJson: function(filename) {
-    var fs = require("fs");
-    var contents = fs.readFileSync(filename);
-    var jsonContent = JSON.parse(contents);
+  parseMusicJson: function(jsonString) {
+    var jsonContent = JSON.parse(jsonString);
     return jsonContent;
   }
 

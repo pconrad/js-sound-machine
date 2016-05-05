@@ -6,7 +6,7 @@
 
   "scripts": {
     "test": "mocha --recursive",
-    "build": "browserify index.js -o static/jsSoundMachine.js"
+    "build": "browserify app.js -o static/jsSoundMachine.js"
   },
 
 

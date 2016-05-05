@@ -17,27 +17,36 @@ module.exports = {
       "E4": 329.63
   },
 
-  playMelody: function(Gibberish,jsonObject,melody) {
-
-		module.exports.sequencerDemo(Gibberish);
+  playMelody: function(Gibberish,jsonObject,melody,msPerBeat) {
 
 		a = new Gibberish.FMSynth().connect();
 	    var melody = jsonObject.melodies[melody];
-        var values = [440.0];
+        var notes = [];
         var durations = []; 
+        var amps = [];
          $.each(melody, function (note) {
 			   if (this.name) {
-				 values.push(module.exports.noteToFreq[this.name]);
-				 durations.push(ms(this.duration * 1000));
+				 notes.push(module.exports.noteToFreq[this.name]);
+				 durations.push(ms(this.duration * msPerBeat));
+                 amps.push(0.9);
+			   } else {
+				   notes.push(55.0); 
+                   durations.push(ms(this.rest * msPerBeat)); 
+				   amps.push(0.0);
 			   }
+			   console.log(JSON.stringify(note));
 		 });
-        console.log("durations = " + JSON.stringify(durations) 
-                    + "values=" + JSON.stringify(values));
-		b = new Gibberish.Sequencer({
-				target:a, key:'note',
-				values: values,
+		
+		var sequencerParams = {
+				target:a, 
 				durations: durations,
-				}).start(); 
+				keysAndValues: {
+					'note' : notes,
+	                'amp'  : amps
+			}
+		};
+	   
+		b = new Gibberish.Sequencer(sequencerParams).repeat(durations.length).start();
 		
 	},
 
@@ -73,7 +82,7 @@ $(document).ready(function(){
     var parsedObject = JsSoundMachine.parseMusicJson(jsonString);
     console.log("Result = " + JSON.stringify(parsedObject));
     
-    JsSoundMachine.playMelody(Gibberish,parsedObject,"frere_jaques"); 
+    JsSoundMachine.playMelody(Gibberish,parsedObject,"frere_jaques",500); 
   }); 
 }); 
 },{".":1,"gibberish-dsp":3,"jquery":4}],3:[function(require,module,exports){

@@ -14,6 +14,6 @@ $(document).ready(function(){
     var parsedObject = JsSoundMachine.parseMusicJson(jsonString);
     console.log("Result = " + JSON.stringify(parsedObject));
     
-    JsSoundMachine.playMelody(Gibberish,parsedObject,"frere_jaques"); 
+    JsSoundMachine.playMelody(Gibberish,parsedObject,"frere_jaques",500); 
   }); 
 }); 

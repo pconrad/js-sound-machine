@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<style>
+  
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">
+</script>
+
+
+<script src="jsSoundMachine.js">
+</script>
+
+<script>
+
+
+$(document).ready(function(){
+  $("#theButton").click( function(){
+  	var jsonString = $("#theTextArea").value();
+    var parsedObject = JsSoundMachine.parseMusicJson(jsonString);
+    console.log("Result = " + JSON.stringify(parsedObject));
+  }); 
+}); 
+
+
+</script>
+
+</head>
+
+<body>
+<h1>js-sound-machine</h1>
+
+<form>
+  <textarea rows="4" cols="50" id="theTextArea"></textarea>
+  <input id="theButton" type="button" value="Generic Button">
+</form>
+
+
+</body>
+
+</html>

@@ -6,12 +6,14 @@
 
   "scripts": {
     "test": "mocha --recursive",
-    "build": "browserify app.js -o static/jsSoundMachine.js"
+    "build": "browserify main.js -o static/jsSoundMachine.js"
   },
 
  "dependencies": {
    "jquery" : "*",
-   "gibberish-dsp" : "*"
+   "gibberish-dsp" : "*",
+   "stringify" : "*",
+   "browserify" : "*"
  },
 
  "devDependencies": {

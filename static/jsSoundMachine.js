@@ -1,44 +1,60 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+
+
+module.exports = {
+  parseMusicJson: function(jsonString) {
+    var jsonObject = JSON.parse(jsonString);
+    return jsonObject;
+	},
+
+  playNote: function(note) {
+		console.log("Note: " + JSON.stringify(note));
+
+	},
+
+  playMelody: function(jsonObject,melody) {
+	    var melody = jsonObject.melodies[melody];
+         $.each(melody, function (note) {
+			 module.exports.playNote(this);
+		 });
+	}
+
+
+
+};
+
+
+},{}],2:[function(require,module,exports){
 var JsSoundMachine = require('.');
 var $ = require('jquery')
+var Gibberish = require("gibberish-dsp");
+
+Gibberish.init();                   // convenience method to start audio callback 
+Gibberish.Binops.export();          // export math functions into global namespace 
+
+function gibberishDemo() {
+    mod = new Gibberish.Sine( 5, 15 );  // sine wave, 5 Hz, 15 amplitude 
+    sine = new Gibberish.Sine({         // sine wave with frequency modulated by mod 
+       frequency: Add( 440, mod ), 
+       amp: .4 
+     }); 
+ 
+   delay = new Gibberish.Delay({ input:sine });     
+   reverb = new Gibberish.Reverb({ input:delay });  
+   reverb.connect();                                
+}
+
 
 $(document).ready(function(){
   $("#theButton").click( function(){
   	var jsonString = $("#theTextArea").val();
     var parsedObject = JsSoundMachine.parseMusicJson(jsonString);
     console.log("Result = " + JSON.stringify(parsedObject));
-
-    var Gibberish = require("gibberish-dsp");
-    
-    Gibberish.init();                   // convenience method to start audio callback 
-    Gibberish.Binops.export();          // export math functions into global namespace 
- 
-    mod = new Gibberish.Sine( 5, 15 );  // sine wave, 5 Hz, 15 amplitude 
- 
-    sine = new Gibberish.Sine({         // sine wave with frequency modulated by mod 
-       frequency: Add( 440, mod ), 
-       amp: .4 
-     }); 
- 
-   delay = new Gibberish.Delay({ input:sine });     // create a delay effect and feed our sine wave into it 
-   reverb = new Gibberish.Reverb({ input:delay });  // create a reverb effect and feed our delay into it 
-   reverb.connect();                                // connect reverb to default master output 
-
+    JsSoundMachine.playMelody(parsedObject,"frere_jaques");
+    /* gibberishDemo();   */
   }); 
 }); 
-},{".":2,"gibberish-dsp":3,"jquery":4}],2:[function(require,module,exports){
-
-
-module.exports = {
-  parseMusicJson: function(jsonString) {
-    var jsonContent = JSON.parse(jsonString);
-    return jsonContent;
-  }
-
-};
-
-
-},{}],3:[function(require,module,exports){
+},{".":1,"gibberish-dsp":3,"jquery":4}],3:[function(require,module,exports){
 (function (global){
 !function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -17826,4 +17842,4 @@ if ( !noGlobal ) {
 return jQuery;
 }));
 
-},{}]},{},[1]);
+},{}]},{},[2]);

@@ -7,18 +7,50 @@ module.exports = {
     return jsonObject;
 	},
 
-  playNote: function(note) {
-		console.log("Note: " + JSON.stringify(note));
+  noteToFreq : {
+	  "A4" : 440,
+      "B4" : 493.88,
+      "C#5" : 554.37,
+      "D5" : 587.33,
+      "E5" : 659.26,
+      "F#5" :  739.99,
+      "E4": 329.63
+  },
 
+  playMelody: function(Gibberish,jsonObject,melody) {
+
+		module.exports.sequencerDemo(Gibberish);
+
+		a = new Gibberish.FMSynth().connect();
+	    var melody = jsonObject.melodies[melody];
+        var values = [440.0];
+        var durations = []; 
+         $.each(melody, function (note) {
+			   if (this.name) {
+				 values.push(module.exports.noteToFreq[this.name]);
+				 durations.push(ms(this.duration * 1000));
+			   }
+		 });
+        console.log("durations = " + JSON.stringify(durations) 
+                    + "values=" + JSON.stringify(values));
+		b = new Gibberish.Sequencer({
+				target:a, key:'note',
+				values: values,
+				durations: durations,
+				}).start(); 
+		
 	},
 
-  playMelody: function(jsonObject,melody) {
-	    var melody = jsonObject.melodies[melody];
-         $.each(melody, function (note) {
-			 module.exports.playNote(this);
-		 });
-	}
+  sequencerDemo: function(Gibberish) {
 
+		a = new Gibberish.FMSynth().connect();
+
+		b = new Gibberish.Sequencer({
+				target:a, key:'note',
+				values:[880,660,440,220],
+				durations:[ ms(500), ms(250), ms(1000) ],
+			}).repeat(2).start();
+	}
 
 
 };
@@ -29,29 +61,19 @@ var JsSoundMachine = require('.');
 var $ = require('jquery')
 var Gibberish = require("gibberish-dsp");
 
-Gibberish.init();                   // convenience method to start audio callback 
-Gibberish.Binops.export();          // export math functions into global namespace 
-
-function gibberishDemo() {
-    mod = new Gibberish.Sine( 5, 15 );  // sine wave, 5 Hz, 15 amplitude 
-    sine = new Gibberish.Sine({         // sine wave with frequency modulated by mod 
-       frequency: Add( 440, mod ), 
-       amp: .4 
-     }); 
- 
-   delay = new Gibberish.Delay({ input:sine });     
-   reverb = new Gibberish.Reverb({ input:delay });  
-   reverb.connect();                                
-}
+Gibberish.init();                   
+Gibberish.Binops.export();          
+Gibberish.Time.export()
 
 
 $(document).ready(function(){
   $("#theButton").click( function(){
-  	var jsonString = $("#theTextArea").val();
+		  
+	var jsonString = $("#theTextArea").val();
     var parsedObject = JsSoundMachine.parseMusicJson(jsonString);
     console.log("Result = " + JSON.stringify(parsedObject));
-    JsSoundMachine.playMelody(parsedObject,"frere_jaques");
-    /* gibberishDemo();   */
+    
+    JsSoundMachine.playMelody(Gibberish,parsedObject,"frere_jaques"); 
   }); 
 }); 
 },{".":1,"gibberish-dsp":3,"jquery":4}],3:[function(require,module,exports){
